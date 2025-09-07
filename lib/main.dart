@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'l10n/app_localizations.dart';
+import 'package:news_app/ui/screens/home/home.dart';
+import 'package:news_app/ui/screens/splash/splash.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,7 +13,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp();
+    return MaterialApp(
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en'), // English
+        Locale('ar'), // Spanish
+      ],
+      //locale: ,
+      debugShowCheckedModeBanner: false,
+      routes: {
+        Home.routeName : (_) => Home(),
+        Splash.routeName :(_) => Splash()
+      },
+      initialRoute: Splash.routeName,
+    );
   }
 }
 
