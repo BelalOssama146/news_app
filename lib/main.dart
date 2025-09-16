@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/ui/providers/language_provider.dart';
+import 'package:news_app/ui/screens/tabs/news_tabs/news_details.dart';
+import 'package:provider/provider.dart';
 import 'l10n/app_localizations.dart';
 import 'package:news_app/ui/screens/home/home.dart';
 import 'package:news_app/ui/screens/splash/splash.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => LanguageProvider(),
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -28,7 +33,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         Home.routeName : (_) => Home(),
-        Splash.routeName :(_) => Splash()
+        Splash.routeName :(_) => Splash(),
+        NewsDetails.routeName:(_) => NewsDetails()
       },
       initialRoute: Splash.routeName,
     );

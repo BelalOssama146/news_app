@@ -1,3 +1,17 @@
 {
-  "settings" : "Settings"
+  "news" : "News App",
+  "title" : "News Title",
+  "settings" : "Settings",
+  "categories" : "Categories",
+  "language" : "Language",
+  "pickCategory" : "Pick your category of interest",
+  "sports" : "Sports",
+  "technology" : "Technology",
+  "health" : "Health",
+  "business" : "Business",
+  "entertainment" : "Entertainment",
+  "science" : "Science",
+  "search" : "Search",
+  "wrong" : "Something went wrong please try again",
+  "view" : "View full article"
 }

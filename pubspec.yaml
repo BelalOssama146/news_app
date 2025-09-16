@@ -38,6 +38,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  url_launcher: ^6.3.2
+  timeago: ^3.7.1
+  provider: ^6.1.5+1
 
 
 dev_dependencies:

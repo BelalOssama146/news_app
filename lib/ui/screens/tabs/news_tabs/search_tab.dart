@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:news_app/data/api_manager.dart';
 import 'package:news_app/data/model/articles_response.dart';
+import 'package:news_app/ui/screens/tabs/news_tabs/news_details.dart';
 import 'package:news_app/ui/widget/loading_view.dart';
 import '../../../../data/model/article.dart';
 import '../../../utils/app_colors.dart';
@@ -28,29 +29,34 @@ class SearchTab extends SearchDelegate{
             return LoadingView();
           }
           ArticlesResponse result = snapshot.data as ArticlesResponse;
-          if(result.articles == null || result.articles == []){
+          if(result.articles!.isEmpty){
             return Center(child: Text("No results found"));
           }
           return ListView.builder(
             itemCount: result.articles?.length,
-            itemBuilder: (context, index) =>  mapSourceToWidget(result.articles![index]),);
+            itemBuilder: (context, index) =>  mapSourceToWidget(context,result.articles![index]),);
         }
     );
   }
-  Widget mapSourceToWidget(Article article) {
+  Widget mapSourceToWidget(BuildContext context,Article article) {
     return Padding(
       padding: const EdgeInsets.only(left: 26,right: 26),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 30,),
-          Image.network(article.urlToImage??""),
-          Text(article.source?.name??"",style: AppStyle.titleNews,),
-          Text(article.title??"",style: AppStyle.sourceTitleTextStyle.copyWith(color: AppColors.black),),
-          Align(
-              alignment: AlignmentGeometry.centerRight,
-              child: Text(article.publishedAt??"",style: AppStyle.dateNews,))
-        ],
+      child: InkWell(
+        onTap: (){
+          Navigator.pushNamed(context, NewsDetails.routeName,arguments: article);
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 30,),
+            Image.network(article.urlToImage??""),
+            Text(article.source?.name??"",style: AppStyle.titleNews,),
+            Text(article.title??"",style: AppStyle.sourceTitleTextStyle.copyWith(color: AppColors.black),),
+            Align(
+                alignment: AlignmentGeometry.centerRight,
+                child: Text(article.publishedAt??"",style: AppStyle.dateNews,))
+          ],
+        ),
       ),
     );
   }
