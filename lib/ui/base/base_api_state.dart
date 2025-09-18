@@ -1,4 +1,7 @@
 abstract class BaseApiState{}
+
+class BaseIdleState extends BaseApiState {}
+
 class BaseLoadingState extends BaseApiState{}
 class BaseErrorState extends BaseApiState{
   String errorMessage;

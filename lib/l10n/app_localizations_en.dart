@@ -52,4 +52,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get view => 'View full article';
+
+  @override
+  String get result => 'No result found';
 }

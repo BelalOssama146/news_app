@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/ui/extension/build_context_extension.dart';
+import 'package:news_app/ui/providers/language_provider.dart';
 import 'package:news_app/ui/screens/tabs/categories/app_category.dart';
 import 'package:news_app/ui/utils/app_style.dart';
+import 'package:provider/provider.dart';
 import '../../../../data/model/category.dart';
 
 class CategoriesTab extends StatefulWidget {
@@ -13,8 +16,10 @@ class CategoriesTab extends StatefulWidget {
 }
 
 class _CategoriesTabState extends State<CategoriesTab> {
+  late LanguageProvider languageProvider;
   @override
   Widget build(BuildContext context) {
+    languageProvider = Provider.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -22,7 +27,8 @@ class _CategoriesTabState extends State<CategoriesTab> {
           padding: const EdgeInsets.only(left: 36, top: 35),
           child: Container(
             width: MediaQuery.of(context).size.width*0.49,
-              child: Text("Pick your category of interest",style: AppStyle.titleText,)),
+              child: Text(
+                context.locale.pickCategory, style: AppStyle.titleText,)),
         ),
         Expanded(
           child: Padding(

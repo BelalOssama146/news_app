@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/ui/extension/build_context_extension.dart';
 import 'package:news_app/ui/utils/app_style.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
@@ -25,7 +26,7 @@ class NewsDetails extends StatelessWidget {
           toolbarHeight: MediaQuery.of(context).size.height*0.1,
           shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.vertical(bottom: Radius.circular(50))),
           backgroundColor: AppColors.appBarColor,
-          title: Text("News Title",style: AppStyle.appBarTextStyle,),
+          title: Text(context.locale.title, style: AppStyle.appBarTextStyle,),
           centerTitle: true,
         ),
         body: ListView(
@@ -74,7 +75,9 @@ class NewsDetails extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text("View full article", style: AppStyle.sourceTitleTextStyle.copyWith(color: AppColors.black),),
+                            Text(context.locale.view, style: AppStyle
+                                .sourceTitleTextStyle.copyWith(
+                                color: AppColors.black),),
                             SizedBox(width: 5,),
                             Icon(Icons.arrow_forward,size: 20,)
                           ],

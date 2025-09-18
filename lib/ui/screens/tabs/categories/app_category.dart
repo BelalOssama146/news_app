@@ -23,7 +23,8 @@ class AppCategory extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(category.imagePath ,height: MediaQuery.of(context).size.height*0.15,),
-          Text(category.title,style: AppStyle.titleText.copyWith(color: Colors.white),)
+          Text(category.title(context),
+            style: AppStyle.titleText.copyWith(color: Colors.white),)
         ],
       ),
     );

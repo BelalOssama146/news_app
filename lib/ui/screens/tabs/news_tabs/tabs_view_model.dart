@@ -1,20 +1,33 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../data/api_manager.dart';
 import '../../../../data/model/source.dart';
 import '../../../base/base_api_state.dart';
 
-class TabsViewModel extends ChangeNotifier{
-  BaseApiState sourceApiState = BaseLoadingState() ;
+class TabsListCubit extends Cubit<TabsListState> {
+  TabsListCubit() : super(TabsListState.initial());
   getSources(String categoryId) async{
     try{
-      sourceApiState = BaseLoadingState();
-      notifyListeners();
-     List<Source> sources = (await ApiManager.getSources(categoryId)).sources!;
-      sourceApiState = BaseSuccessState(sources);
-      notifyListeners();
+      emit(TabsListState(tabsListApiState: BaseLoadingState()));
+      List<Source> sources = (await ApiManager.getSources(categoryId)).sources!;
+      emit(TabsListState(tabsListApiState: BaseSuccessState(sources)));
     }catch(e){
-      sourceApiState = BaseErrorState(e.toString());
-      notifyListeners();
+      emit(TabsListState(tabsListApiState: BaseErrorState(e.toString())));
     }
+  }
+}
+
+class TabsListState {
+  late BaseApiState tabsListApiState;
+
+  TabsListState({required this.tabsListApiState});
+
+  TabsListState.initial() {
+    tabsListApiState = BaseIdleState();
+  }
+
+  TabsListState copyWith({BaseApiState? tabsListApiState}) {
+    return TabsListState(
+      tabsListApiState: tabsListApiState ?? this.tabsListApiState,
+    );
   }
 }

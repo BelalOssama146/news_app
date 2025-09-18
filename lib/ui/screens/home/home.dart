@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/data/model/category.dart';
+import 'package:news_app/ui/extension/build_context_extension.dart';
+import 'package:news_app/ui/providers/language_provider.dart';
 import 'package:news_app/ui/screens/tabs/categories/categories_tab.dart';
 import 'package:news_app/ui/screens/tabs/news_tabs/search_tab.dart';
 import 'package:news_app/ui/screens/tabs/settings/settings.dart';
 import 'package:news_app/ui/utils/app_colors.dart';
 import 'package:news_app/ui/utils/app_style.dart';
+import 'package:provider/provider.dart';
 import '../tabs/news_tabs/tab_list.dart';
 
 class Home extends StatefulWidget {
@@ -16,6 +19,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late LanguageProvider languageProvider;
   late Widget currentTab;
   int selectedIndex = 0;
   String appBarTitle = "News App";
@@ -27,6 +31,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    languageProvider = Provider.of(context);
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(image: AssetImage("assets/pattern.png"),fit: BoxFit.cover),
@@ -43,20 +48,26 @@ class _HomeState extends State<Home> {
   void onCategoryClick(Category category){
     switchTab(
         TabList(categoryId: category.backEndId),
-        category.title);
+        category.title(context));
     setState(() {});
   }
-  void switchTab(Widget tab, String title){
+
+  void switchTab(Widget tab, String titleKey) {
     currentTab = tab;
-    appBarTitle = title;
+    appBarTitle = titleKey;
     setState(() {});
   }
   AppBar buildAppBar(){
     return AppBar(
+      iconTheme: IconThemeData(
+          color: AppColors.white,
+          size: 30
+      ),
       toolbarHeight: MediaQuery.of(context).size.height*0.1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.vertical(bottom: Radius.circular(50))),
       backgroundColor: AppColors.appBarColor,
-      title: Text(appBarTitle,style: AppStyle.appBarTextStyle,),
+      title: Text(context.locale.getString(appBarTitle),
+        style: AppStyle.appBarTextStyle,),
       centerTitle: true,
       actions: [
         IconButton(
@@ -64,9 +75,7 @@ class _HomeState extends State<Home> {
               showSearch(context: context, delegate: SearchTab());
             },
             icon: Icon(Icons.search),
-            iconSize: 30,
-            color: AppColors.white,
-        )
+        ),
       ],
     );
   }
@@ -78,11 +87,11 @@ class _HomeState extends State<Home> {
           buildDrawerHeader(),
           buildDrawerRow(
               iconData:Icons.list,
-              title: "Categories",
+              title: context.locale.categories,
              onClick: (){
                 switchTab(
                     CategoriesTab(onCategoryClick),
-                    "News App"
+                    context.locale.news
                 );
                 Navigator.pop(context);
                 setState(() {});
@@ -90,11 +99,11 @@ class _HomeState extends State<Home> {
           ),
           buildDrawerRow(
               iconData:Icons.settings,
-              title: "Settings",
+              title: context.locale.getString("Settings"),
               onClick: (){
                 switchTab(
                   Settings(),
-                  "Settings"
+                  "Settings",
                 );
                 Navigator.pop(context);
                 setState(() {});
@@ -126,6 +135,7 @@ class _HomeState extends State<Home> {
     decoration: BoxDecoration(
       color: AppColors.appBarColor,
     ),
-    child: Center(child: Text("News App" ,style: AppStyle.appBarTextStyle,)),
+        child: Center(
+            child: Text(context.locale.news, style: AppStyle.appBarTextStyle,)),
   );
 }

@@ -55,12 +55,10 @@ class _NewsListState extends State<NewsList>  {
          return ErrorView(error: snapshot.error.toString(), onRetryClick: (){});
         }if((snapshot.data!.articles?? []).isNotEmpty){
           if(snapshot.data!.articles!.length < 10){
-            print("short");
             lastPage = true;
           }
           newList.addAll(snapshot.data!.articles!);
         }else{
-          print("empty");
           lastPage = true;
         }
         return ListView.builder(

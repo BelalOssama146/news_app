@@ -15,7 +15,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get title => 'عنوان الخبر';
 
   @override
-  String get settings => 'العربية';
+  String get settings => 'الاعدادت';
 
   @override
   String get categories => 'الفئات';
@@ -52,4 +52,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get view => 'عرض المقال بالكامل';
+
+  @override
+  String get result => 'لا توجد نتائج';
 }

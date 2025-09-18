@@ -13,5 +13,6 @@
   "science" : "Science",
   "search" : "Search",
   "wrong" : "Something went wrong please try again",
-  "view" : "View full article"
+  "view": "View full article",
+  "result": "No result found"
 }

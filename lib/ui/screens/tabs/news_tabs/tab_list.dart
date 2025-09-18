@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/data/model/source.dart';
 import 'package:news_app/ui/base/base_api_state.dart';
 import 'package:news_app/ui/screens/tabs/news_tabs/news_list.dart';
@@ -7,7 +8,6 @@ import 'package:news_app/ui/utils/app_colors.dart';
 import 'package:news_app/ui/utils/app_style.dart';
 import 'package:news_app/ui/widget/error_view.dart';
 import 'package:news_app/ui/widget/loading_view.dart';
-import 'package:provider/provider.dart';
 
 class TabList extends StatefulWidget {
   final String categoryId;
@@ -18,7 +18,7 @@ class TabList extends StatefulWidget {
 }
 
 class _TabListState extends State<TabList> {
-  TabsViewModel viewModel = TabsViewModel();
+  TabsListCubit viewModel = TabsListCubit();
   int selectedTabIndex = 0;
   @override
   void initState() {
@@ -27,21 +27,42 @@ class _TabListState extends State<TabList> {
   }
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => viewModel,
-      builder: (context,_){
-        viewModel = Provider.of(context);
-        if(viewModel.sourceApiState is BaseLoadingState){
-          return LoadingView();
-        }else if(viewModel.sourceApiState is BaseErrorState){
-          String errorMessage = (viewModel.sourceApiState as BaseErrorState).errorMessage;
-          return ErrorView(error: errorMessage, onRetryClick: (){});
-        }else{
-          List<Source> sources = (viewModel.sourceApiState as BaseSuccessState).data;
-          return buildTabList(sources);
-        }
-      }
-    );
+    return BlocProvider(create: (_) => viewModel,
+      child: BlocBuilder<TabsListCubit, TabsListState>(
+          builder: (context, state) {
+            if (state.tabsListApiState is BaseLoadingState) {
+              return LoadingView();
+            } else
+            if (state.tabsListApiState is BaseSuccessState<List<Source>>) {
+              List<Source> sources =
+                  (state.tabsListApiState as BaseSuccessState<List<Source>>)
+                      .data;
+              return buildTabList(sources);
+            } else if (state.tabsListApiState is BaseErrorState) {
+              String errorMessage = (state.tabsListApiState as BaseErrorState)
+                  .errorMessage;
+              return ErrorView(error: errorMessage, onRetryClick: () {});
+            } else {
+              return LoadingView();
+            }
+          }),);
+
+
+    // return ChangeNotifierProvider(
+    //     create: (_) => viewModel,
+    //   builder: (context,_){
+    //     viewModel = Provider.of(context);
+    //     if(viewModel.sourceApiState is BaseLoadingState){
+    //       return LoadingView();
+    //     }else if(viewModel.sourceApiState is BaseErrorState){
+    //       String errorMessage = (viewModel.sourceApiState as BaseErrorState).errorMessage;
+    //       return ErrorView(error: errorMessage, onRetryClick: (){});
+    //     }else{
+    //       List<Source> sources = (viewModel.sourceApiState as BaseSuccessState).data;
+    //       return buildTabList(sources);
+    //     }
+    //   }
+    // );
 
   }
 

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:news_app/data/api_manager.dart';
 import 'package:news_app/data/model/articles_response.dart';
+import 'package:news_app/ui/extension/build_context_extension.dart';
+import 'package:news_app/ui/providers/language_provider.dart';
 import 'package:news_app/ui/screens/tabs/news_tabs/news_details.dart';
 import 'package:news_app/ui/widget/loading_view.dart';
+import 'package:provider/provider.dart';
 import '../../../../data/model/article.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_style.dart';
@@ -18,8 +21,15 @@ class SearchTab extends SearchDelegate{
    ];
   }
 
-  Widget getResults(){
-    return FutureBuilder(
+  late LanguageProvider languageProvider;
+
+  Widget getResults(BuildContext context) {
+    languageProvider = Provider.of(context);
+    return query.isEmpty
+        ? Center(child: Text(
+      context.locale.result, style: AppStyle.dateNews.copyWith(fontSize: 20),))
+        :
+    FutureBuilder(
         future: ApiManager.getArticles(query: query),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -29,8 +39,8 @@ class SearchTab extends SearchDelegate{
             return LoadingView();
           }
           ArticlesResponse result = snapshot.data as ArticlesResponse;
-          if(result.articles!.isEmpty){
-            return Center(child: Text("No results found"));
+          if (result.articles!.isEmpty || result.articles == null) {
+            return Center(child: Text(context.locale.result));
           }
           return ListView.builder(
             itemCount: result.articles?.length,
@@ -70,12 +80,12 @@ class SearchTab extends SearchDelegate{
 
   @override
   Widget buildResults(BuildContext context) {
-    return getResults();
+    return getResults(context);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return getResults();
+    return getResults(context);
   }
   @override
   ThemeData appBarTheme(BuildContext context) {

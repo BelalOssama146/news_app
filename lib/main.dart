@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LanguageProvider languageProvider = Provider.of(context);
     return MaterialApp(
       localizationsDelegates: [
         AppLocalizations.delegate,
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         Locale('en'), // English
         Locale('ar'), // Spanish
       ],
-      //locale: ,
+      locale: Locale(languageProvider.selectedLanguage),
       debugShowCheckedModeBanner: false,
       routes: {
         Home.routeName : (_) => Home(),
