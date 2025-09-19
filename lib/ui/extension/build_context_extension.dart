@@ -24,6 +24,8 @@ extension AppLocalizationExtension on AppLocalizations {
         return science;
       case "Settings":
         return settings;
+      case "News App":
+        return news;
       default:
         return key;
     }

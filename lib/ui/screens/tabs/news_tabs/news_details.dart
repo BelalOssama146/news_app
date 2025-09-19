@@ -57,7 +57,10 @@ class NewsDetails extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
-                height: MediaQuery.of(context).size.height*0.37,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.39,
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
                     color: AppColors.white,
