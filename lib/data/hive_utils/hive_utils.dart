@@ -1,6 +1,8 @@
 import 'package:hive/hive.dart';
+import 'package:injectable/injectable.dart';
 import 'package:news_app/data/model/source_response.dart';
 
+@injectable
 class HiveUtils {
   Future<SourceResponse?> getSources(String categoryId) async {
     var box = await Hive.openBox('tab_list');

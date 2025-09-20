@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/data/hive_utils/hive_utils.dart';
 import 'package:news_app/data/model/source.dart';
-import 'package:news_app/data/repositories/data_source/offline_data_source.dart';
-import 'package:news_app/data/repositories/data_source/online_data_source.dart';
-import 'package:news_app/data/repositories/new_repository.dart';
+import 'package:news_app/di.dart';
 import 'package:news_app/ui/base/base_api_state.dart';
 import 'package:news_app/ui/screens/tabs/news_tabs/news_list.dart';
 import 'package:news_app/ui/screens/tabs/news_tabs/tabs_view_model.dart';
@@ -22,8 +19,7 @@ class TabList extends StatefulWidget {
 }
 
 class _TabListState extends State<TabList> {
-  TabsListCubit viewModel = TabsListCubit(
-      NewRepository(OnlineDataSource(), OfflineDataSource(HiveUtils())));
+  TabsListCubit viewModel = getIt();
   int selectedTabIndex = 0;
   @override
   void initState() {

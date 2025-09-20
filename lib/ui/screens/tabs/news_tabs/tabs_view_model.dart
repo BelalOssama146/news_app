@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import '../../../../data/model/source.dart';
 import '../../../../data/repositories/new_repository.dart';
 import '../../../base/base_api_state.dart';
 
+@injectable
 class TabsListCubit extends Cubit<TabsListState> {
   NewRepository newRepo;
-
   TabsListCubit(this.newRepo) : super(TabsListState.initial());
   getSources(String categoryId) async{
     try{
