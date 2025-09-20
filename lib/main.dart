@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:news_app/data/hive_utils/hive_utils.dart';
 import 'package:news_app/ui/providers/language_provider.dart';
 import 'package:news_app/ui/screens/tabs/news_tabs/news_details.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +10,9 @@ import 'package:news_app/ui/screens/home/home.dart';
 import 'package:news_app/ui/screens/splash/splash.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(SourceResponseAdapter());
   runApp(ChangeNotifierProvider(
     create: (_) => LanguageProvider(),
       child: const MyApp()));

@@ -1,6 +1,8 @@
+import 'package:hive/hive.dart';
 import 'package:news_app/data/model/source.dart';
 
-class SourceResponse {
+class SourceResponse extends HiveObject {
+  @HiveType(typeId: 0)
   String? status;
   List<Source>? sources;
 

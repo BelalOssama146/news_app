@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:http/http.dart'  ;
 import 'package:news_app/data/model/articles_response.dart';
 import 'package:news_app/data/model/source_response.dart';
@@ -28,23 +29,28 @@ abstract class ApiManager{
     String? query,
     int? page,
     int? pageSize
-  }) async{
-    final url = Uri.https("newsapi.org",_articlesEndPoint,{
-      "apiKey" : _apiKey,
-      if(sourceId!= null && sourceId.isNotEmpty) "sources" : sourceId,
-      if(query!= null && query.isNotEmpty) "q" : query,
-      if(page!=null) "page" : page.toString(),
-      if(pageSize!=null) "pageSize" : pageSize.toString()
-    });
-
-
-    Response serverResponse = await get(url);
-   if(serverResponse.statusCode >= 200 && serverResponse.statusCode < 300){
-     Map json= jsonDecode(serverResponse.body) as Map ;
-     return ArticlesResponse.fromJson(json);
-   }
-   else{
-     throw "Something went wrong please try again";
-   }
+  }) async {
+    final List<ConnectivityResult> connectivityResult = await (Connectivity()
+        .checkConnectivity());
+    if (connectivityResult.contains(ConnectivityResult.wifi) ||
+        connectivityResult.contains(ConnectivityResult.mobile)) {
+      final url = Uri.https("newsapi.org", _articlesEndPoint, {
+        "apiKey": _apiKey,
+        if(sourceId != null && sourceId.isNotEmpty) "sources": sourceId,
+        if(query != null && query.isNotEmpty) "q": query,
+        if(page != null) "page": page.toString(),
+        if(pageSize != null) "pageSize": pageSize.toString()
+      });
+      Response serverResponse = await get(url);
+      if (serverResponse.statusCode >= 200 && serverResponse.statusCode < 300) {
+        Map json = jsonDecode(serverResponse.body) as Map;
+        return ArticlesResponse.fromJson(json);
+      }
+      else {
+        throw "Something went wrong please try again";
+      }
+    } else {
+      throw "Please check your internet connection and try again ";
+    }
   }
 }

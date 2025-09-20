@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
   }
   AppBar buildAppBar(){
     return AppBar(
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
           color: AppColors.white,
           size: 30
       ),

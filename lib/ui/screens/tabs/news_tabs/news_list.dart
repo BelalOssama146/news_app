@@ -41,7 +41,6 @@ class _NewsListState extends State<NewsList>  {
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
         future:ApiManager.getArticles(
           sourceId: widget.source.id,

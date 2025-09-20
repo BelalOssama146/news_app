@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/data/hive_utils/hive_utils.dart';
 import 'package:news_app/data/model/source.dart';
+import 'package:news_app/data/repositories/data_source/offline_data_source.dart';
+import 'package:news_app/data/repositories/data_source/online_data_source.dart';
+import 'package:news_app/data/repositories/new_repository.dart';
 import 'package:news_app/ui/base/base_api_state.dart';
 import 'package:news_app/ui/screens/tabs/news_tabs/news_list.dart';
 import 'package:news_app/ui/screens/tabs/news_tabs/tabs_view_model.dart';
@@ -18,7 +22,8 @@ class TabList extends StatefulWidget {
 }
 
 class _TabListState extends State<TabList> {
-  TabsListCubit viewModel = TabsListCubit();
+  TabsListCubit viewModel = TabsListCubit(
+      NewRepository(OnlineDataSource(), OfflineDataSource(HiveUtils())));
   int selectedTabIndex = 0;
   @override
   void initState() {
@@ -27,8 +32,9 @@ class _TabListState extends State<TabList> {
   }
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (_) => viewModel,
-      child: BlocBuilder<TabsListCubit, TabsListState>(
+    // return BlocProvider(create: (_) => viewModel,
+    return BlocBuilder<TabsListCubit, TabsListState>(
+        bloc: viewModel,
           builder: (context, state) {
             if (state.tabsListApiState is BaseLoadingState) {
               return LoadingView();
@@ -41,12 +47,14 @@ class _TabListState extends State<TabList> {
             } else if (state.tabsListApiState is BaseErrorState) {
               String errorMessage = (state.tabsListApiState as BaseErrorState)
                   .errorMessage;
-              return ErrorView(error: errorMessage, onRetryClick: () {});
+              return ErrorView(error: errorMessage, onRetryClick: () {
+                viewModel.getSources(widget.categoryId);
+              });
             } else {
               return LoadingView();
             }
-          }),);
-
+          });
+    //)blocProvider;
 
     // return ChangeNotifierProvider(
     //     create: (_) => viewModel,
